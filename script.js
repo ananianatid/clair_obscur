@@ -29,7 +29,8 @@ const createWeatherDiv = (className, textContent) => {
 
 
 const displayWeatherData = (location) => {
-  const API_KEY = "3d1853a7fd9b499794571220230607";
+  //const API_KEY = "3d1853a7fd9b499794571220230607";
+  const API_KEY = "c6ae1b06776f404f9dc104651250805";
 
   return fetch(
     `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${location}`
@@ -52,10 +53,9 @@ const displayWeatherData = (location) => {
       const cardBodyDiv = document.createElement("div");
       cardBodyDiv.classList.add("weather-card__body");
 
-      
+      const city = `${data.location.name}, ${data.location.country}`;
       const cityDiv = createWeatherDiv(
-        "weather-data__city",
-        data.location.name
+        "weather-data__city", city
       );
       const humidityDiv = createWeatherDiv("weather-data__humidity");
       humidityDiv.innerHTML = `<i class="fas fa-droplet"></i> ${data.current.humidity}%`;
@@ -68,6 +68,12 @@ const displayWeatherData = (location) => {
       const updatedAtDiv = createWeatherDiv(
         "weather-data__updated-at",
         `Updated at : ${timeString}`
+      );
+      const localdate = data.location.localtime;
+      const localtime = localdate.split(" ")[1]
+      const localtimeDiv = createWeatherDiv(
+        "weather-data__localtime",
+        `${localdate}`
       );
       const windDiv = createWeatherDiv("weather-data__wind");
       windDiv.innerHTML = `<i class="fas fa-wind"></i> ${data.current.wind_kph} km/h ${data.current.wind_dir}`;
@@ -95,7 +101,8 @@ const displayWeatherData = (location) => {
 
       
       cardBodyDiv.appendChild(cityDiv);
-      cardBodyDiv.appendChild(updatedAtDiv);
+      cardBodyDiv.appendChild(localtimeDiv)
+      //cardBodyDiv.appendChild(updatedAtDiv);
       cardBodyDiv.appendChild(weatherIconEl); 
       cardBodyDiv.appendChild(temperatureDivC);
       cardBodyDiv.appendChild(temperatureDivF);
